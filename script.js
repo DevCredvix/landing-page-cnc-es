@@ -74,17 +74,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const whatsappButtons = document.querySelectorAll('.btn-whatsapp-main, .whatsapp-float');
     whatsappButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Log para análise (pode integrar com Google Analytics/Facebook Pixel)
+            // Log para análise
             console.log('CTA WhatsApp clicado:', this.className);
             
-            // Se tiver Google Analytics configurado, descomente:
-            // gtag('event', 'click', {
-            //     'event_category': 'CTA',
-            //     'event_label': 'WhatsApp Button'
-            // });
+            // Facebook Pixel - Lead Event
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', {
+                    content_name: 'WhatsApp CTA',
+                    content_category: 'Credito na Conta'
+                });
+                console.log('Facebook Pixel: Lead event tracked');
+            }
             
-            // Se tiver Facebook Pixel configurado, descomente:
-            // fbq('track', 'Lead');
+            // TikTok Pixel - ClickButton Event
+            if (typeof ttq !== 'undefined') {
+                ttq.track('ClickButton', {
+                    content_type: 'WhatsApp CTA',
+                    content_name: 'Credito na Conta'
+                });
+                console.log('TikTok Pixel: ClickButton event tracked');
+            }
+            
+            // Google Analytics (se configurado)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'click', {
+                    'event_category': 'CTA',
+                    'event_label': 'WhatsApp Button',
+                    'value': 1
+                });
+            }
         });
     });
 
